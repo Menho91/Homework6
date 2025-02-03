@@ -7,7 +7,7 @@ ATimerActor::ATimerActor()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMeshComp->SetupAttachment(SceneRoot);
 
-	VanishTime = 3.0f;
+	VanishTime = FMath::RandRange(1.0f, 5.0f);
 	bVanishSwitch = true;
 }
 
@@ -16,13 +16,13 @@ void ATimerActor::VanishActor()
 	if (bVanishSwitch)
 	{
 		StaticMeshComp->SetVisibility(false);
-		SetActorLocation(StartLocation - FVector(0.0f, 0.0f, 5000.0f));
+		StaticMeshComp->SetCollisionProfileName(TEXT("NoCollision"));
 		bVanishSwitch = false;
 	}
 	else
 	{
 		StaticMeshComp->SetVisibility(true);
-		SetActorLocation(StartLocation);
+		StaticMeshComp->SetCollisionProfileName(TEXT("BlockAllDynamic"));
 		bVanishSwitch = true;
 	}
 }

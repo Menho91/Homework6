@@ -9,7 +9,8 @@ ARotatingActor::ARotatingActor()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMeshComp->SetupAttachment(SceneRoot);
 
-	RotateSpeed = 90.0f;
+	RotateSpeed = FMath::RandRange(60.0f, 180.0f);
+	SetActorRelativeScale3D(FVector(FMath::RandRange(1.0f, 3.0f), FMath::RandRange(1.0f, 3.0f), 1.0f));
 }
 
 void ARotatingActor::Tick(float DeltaTime)

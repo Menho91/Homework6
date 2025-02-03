@@ -9,8 +9,8 @@ AMovingActor::AMovingActor()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMeshComp->SetupAttachment(SceneRoot);
 
-	MoveSpeed = 90.0f;
-	MaxRange = 200.0f;
+	MoveSpeed = FMath::RandRange(50.0f, 300.0f);
+	MaxRange = FMath::RandRange(100.0f, 200.0f);
 }
 
 void AMovingActor::BeginPlay()
@@ -23,7 +23,6 @@ void AMovingActor::BeginPlay()
 void AMovingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("%f"), FVector::Distance(StartLocation, GetActorLocation()))
 
 	if (!FMath::IsNearlyZero(MoveSpeed) && !FMath::IsNearlyZero(MaxRange))
 	{
