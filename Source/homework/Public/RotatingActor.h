@@ -19,6 +19,10 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
 	float RotateSpeed;
 
+	float MajorAxis;
+	float MinorAxis;
+
 protected:
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };

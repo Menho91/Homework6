@@ -20,10 +20,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	FTimerHandle ShouldActorSpawn;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneRoot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UBoxComponent* SpawnVolume;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "SpawnActor")
+	TObjectPtr<UBlueprint> BP_Actor;
 
 	int switch_num;
 };

@@ -1,8 +1,5 @@
 #include "MyActorSpawner.h"
 #include "Components/BoxComponent.h"
-#include "MovingActor.h"
-#include "RotatingActor.h"
-#include "TimerActor.h"
 
 AMyActorSpawner::AMyActorSpawner()
 {
@@ -12,6 +9,7 @@ AMyActorSpawner::AMyActorSpawner()
 	SpawnVolume->SetupAttachment(SceneRoot);
 
 	switch_num = 0;
+	BP_Actor = nullptr;
 }
 
 void AMyActorSpawner::BeginPlay()
@@ -24,28 +22,37 @@ void AMyActorSpawner::BeginPlay()
 void AMyActorSpawner::SpawnActor()
 {
 	switch_num++;
-	FVector SpawnLocation = GetActorLocation() + FVector(FMath::RandRange(-300.0f, 300.0f), FMath::RandRange(-300.0f, 300.0f), FMath::RandRange(-500.0f, 500.0f));
-	FRotator SpawnRotation = GetActorRotation();
-	AActor* Actor = nullptr;
-	
+	FVector SpawnLocation = GetActorLocation() + FVector(FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-500.0f, 500.0f));
+	TSubclassOf<class UObject> blockBP = nullptr;
+
 	switch (switch_num % 3)
 	{
 	case 1:
-		Actor = GetWorld()->SpawnActor<AMovingActor>(SpawnLocation, SpawnRotation);
+		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_MovingActor.BP_MovingActor"));
+		blockBP = (UClass*)BP_Actor->GeneratedClass;
+		if (BP_Actor && blockBP)
+		{
+			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
+		}
 		break;
 	case 2:
-		Actor = GetWorld()->SpawnActor<ARotatingActor>(SpawnLocation, SpawnRotation);
+		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_RotatingActor.BP_RotatingActor"));
+		blockBP = (UClass*)BP_Actor->GeneratedClass;
+		if (BP_Actor && blockBP)
+		{
+			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
+		}
 		break;
 	case 0:
-		Actor = GetWorld()->SpawnActor<ATimerActor>(SpawnLocation, SpawnRotation);
+		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_TimerActor.BP_TimerActor"));
+		blockBP = (UClass*)BP_Actor->GeneratedClass;
+		if (BP_Actor && blockBP)
+		{
+			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
+		}
 		break;
 	default:
 		break;
-	}
-
-	if (Actor)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Successfully Spawned."))
 	}
 }
 
