@@ -9,8 +9,19 @@ ARotatingActor::ARotatingActor()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMeshComp->SetupAttachment(SceneRoot);
 
+	RotateSpeed = 1.0f;
+	MajorAxis = 1.0f;
+	MinorAxis = 1.0f;
+}
+
+void ARotatingActor::BeginPlay()
+{
+	Super::BeginPlay();
+
 	RotateSpeed = FMath::RandRange(60.0f, 180.0f);
-	SetActorRelativeScale3D(FVector(FMath::RandRange(1.0f, 3.0f), FMath::RandRange(1.0f, 3.0f), 1.0f));
+	MajorAxis = FMath::RandRange(1.0f, 3.0f);
+	MinorAxis = FMath::RandRange(1.0f, 3.0f);
+	SetActorRelativeScale3D(FVector(MajorAxis, MinorAxis, 1.0f));
 }
 
 void ARotatingActor::Tick(float DeltaTime)
