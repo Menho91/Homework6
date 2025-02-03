@@ -9,12 +9,6 @@ void ARotatingActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-<<<<<<< Updated upstream
-	RotateSpeed = FMath::RandRange(60.0f, 180.0f);
-	MajorAxis = FMath::RandRange(1.0f, 3.0f);
-	MinorAxis = FMath::RandRange(1.0f, 3.0f);
-=======
->>>>>>> Stashed changes
 	SetActorRelativeScale3D(FVector(MajorAxis, MinorAxis, 1.0f));
 
 	ensure(!FMath::IsNearlyZero(RotateSpeed));
