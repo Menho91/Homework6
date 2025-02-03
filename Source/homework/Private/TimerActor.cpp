@@ -1,14 +1,8 @@
 #include "TimerActor.h"
 
-ATimerActor::ATimerActor()
+ATimerActor::ATimerActor() : APlatformBase::APlatformBase()
 {
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	SetRootComponent(SceneRoot);
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	StaticMeshComp->SetupAttachment(SceneRoot);
 
-	VanishTime = FMath::RandRange(1.0f, 5.0f);
-	bVanishSwitch = true;
 }
 
 void ATimerActor::VanishActor()
@@ -30,8 +24,6 @@ void ATimerActor::VanishActor()
 void ATimerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	StartLocation = GetActorLocation();
 
 	GetWorldTimerManager().SetTimer(IsVanishTimer, this, &ATimerActor::VanishActor, VanishTime, true);
 }

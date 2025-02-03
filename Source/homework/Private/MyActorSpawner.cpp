@@ -7,9 +7,6 @@ AMyActorSpawner::AMyActorSpawner()
 	SetRootComponent(SceneRoot);
 	SpawnVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnVolume"));
 	SpawnVolume->SetupAttachment(SceneRoot);
-
-	switch_num = 0;
-	BP_Actor = nullptr;
 }
 
 void AMyActorSpawner::BeginPlay()
@@ -22,7 +19,10 @@ void AMyActorSpawner::BeginPlay()
 void AMyActorSpawner::SpawnActor()
 {
 	switch_num++;
-	FVector SpawnLocation = GetActorLocation() + FVector(FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-500.0f, 500.0f));
+
+	FVector LocationShift(FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-500.0f, 500.0f));
+	FVector SpawnLocation = GetActorLocation() + LocationShift;
+
 	TSubclassOf<class UObject> blockBP = nullptr;
 
 	switch (switch_num % 3)

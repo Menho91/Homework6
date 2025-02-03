@@ -1,16 +1,8 @@
 #include "MovingActor.h"
 
-AMovingActor::AMovingActor()
+AMovingActor::AMovingActor() : APlatformBase::APlatformBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	SetRootComponent(SceneRoot);
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	StaticMeshComp->SetupAttachment(SceneRoot);
-
-	MoveSpeed = FMath::RandRange(50.0f, 300.0f);
-	MaxRange = FMath::RandRange(100.0f, 200.0f);
 }
 
 void AMovingActor::BeginPlay()
@@ -18,19 +10,20 @@ void AMovingActor::BeginPlay()
 	Super::BeginPlay();
 
 	StartLocation = GetActorLocation();
+
+	ensure(!FMath::IsNearlyZero(MoveSpeed));
+	ensure(!FMath::IsNearlyZero(MaxRange));
 }
 
 void AMovingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!FMath::IsNearlyZero(MoveSpeed) && !FMath::IsNearlyZero(MaxRange))
+	AddActorLocalOffset(FVector(MoveSpeed * DeltaTime, 0.0f, 0.0f));
+
+	if (MaxRangeSqare < FVector::DistSquared(StartLocation, GetActorLocation()))
 	{
-		AddActorLocalOffset(FVector(MoveSpeed * DeltaTime, 0.0f, 0.0f));
-		if (MaxRange < FVector::Distance(StartLocation, GetActorLocation()))
-		{
-			MoveSpeed *= -1.0f;
-		}
+		MoveSpeed *= -1.0f;
 	}
 }
 

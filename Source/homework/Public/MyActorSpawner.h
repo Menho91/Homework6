@@ -13,19 +13,23 @@ class HOMEWORK_API AMyActorSpawner : public AActor
 	
 public:	
 	AMyActorSpawner();
-
-	UFUNCTION()
 	void SpawnActor();
 
 protected:
 	virtual void BeginPlay() override;
+	
+public:
 	FTimerHandle ShouldActorSpawn;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneRoot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UBoxComponent* SpawnVolume;
+	
+protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "SpawnActor")
-	TObjectPtr<UBlueprint> BP_Actor;
+	TObjectPtr<UBlueprint> BP_Actor = nullptr;
 
-	int switch_num;
+	int switch_num = 0;
+
 };

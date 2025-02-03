@@ -2,30 +2,28 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PlatformBase.h"
 #include "TimerActor.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class HOMEWORK_API ATimerActor : public AActor
+class HOMEWORK_API ATimerActor : public APlatformBase
 {
 	GENERATED_BODY()
 	
-public:	
+public:
 	ATimerActor();
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USceneComponent* SceneRoot;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* StaticMeshComp;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	float VanishTime;
+	void VanishActor();
 
 protected:
 	virtual void BeginPlay() override;
 	
-	UFUNCTION()
-	void VanishActor();
-	UPROPERTY()
-	FVector StartLocation;
+public:
 	FTimerHandle IsVanishTimer;
-	bool bVanishSwitch;
+
+protected:
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
+	float VanishTime = FMath::RandRange(1.0f, 5.0f);
+
+	bool bVanishSwitch = true;
+
 };
