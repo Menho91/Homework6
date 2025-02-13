@@ -20,7 +20,6 @@ protected:
 public:
 	FTimerHandle IsVanishTimer;
 
-protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
 	float VanishTime = FMath::RandRange(1.0f, 5.0f);
 

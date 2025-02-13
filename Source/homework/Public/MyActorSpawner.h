@@ -23,13 +23,13 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneRoot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	UBoxComponent* SpawnVolume;
-	
-protected:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "SpawnActor")
-	TObjectPtr<UBlueprint> BP_Actor = nullptr;
 
-	int switch_num = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnOption")
+	TArray<TSubclassOf<AActor>> ActorToSpawn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnOption")
+	float SpawnRange = 1000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnOption")
+	float SpawnZ = 500.0f;
 };

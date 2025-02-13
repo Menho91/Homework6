@@ -17,14 +17,13 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-protected:
+public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	float MaxRange = FMath::RandRange(100.0f, 200.0f);
-	float MaxRangeSqare = MaxRange * MaxRange;
+	float MaxRange = 300.0f;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	float MoveSpeed = FMath::RandRange(50.0f, 300.0f);;
-
+	float MoveSpeed = 100.0f;
+	float MovementDirection = 1.f;
 	FVector StartLocation;
 
 };

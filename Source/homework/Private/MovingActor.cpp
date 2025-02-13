@@ -19,11 +19,18 @@ void AMovingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddActorLocalOffset(FVector(MoveSpeed * DeltaTime, 0.0f, 0.0f));
+	const float DeltaMove = MoveSpeed * DeltaTime * MovementDirection;
+	float NewX = GetActorLocation().X + DeltaMove;
 
-	if (MaxRangeSqare < FVector::DistSquared(StartLocation, GetActorLocation()))
+	const float DistanceFromStart = FMath::Abs(StartLocation.X - NewX);
+	if (DistanceFromStart > MaxRange)
 	{
-		MoveSpeed *= -1.0f;
+		NewX -= (DistanceFromStart - MaxRange) * MovementDirection;
+		MovementDirection *= -1.f;
 	}
+
+	FVector NewLocation = GetActorLocation();
+	NewLocation.X = NewX;
+	SetActorLocation(NewLocation);
 }
 

@@ -17,11 +17,11 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	
-protected:
+public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	float RotateSpeed = 1.0f;
+	float RotateSpeed = 90.0f;
 
-	float MajorAxis = FMath::RandRange(1.0f, 3.0f);
-	float MinorAxis = FMath::RandRange(1.0f, 3.0f);
+	float MajorAxis = 2.0f;
+	float MinorAxis = 2.0f;
 
 };

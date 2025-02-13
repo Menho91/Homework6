@@ -1,12 +1,13 @@
 #include "MyActorSpawner.h"
 #include "Components/BoxComponent.h"
+#include "MovingActor.h"
+#include "RotatingActor.h"
+#include "TimerActor.h"
 
 AMyActorSpawner::AMyActorSpawner()
 {
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	SetRootComponent(SceneRoot);
-	SpawnVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnVolume"));
-	SpawnVolume->SetupAttachment(SceneRoot);
 }
 
 void AMyActorSpawner::BeginPlay()
@@ -18,41 +19,35 @@ void AMyActorSpawner::BeginPlay()
 
 void AMyActorSpawner::SpawnActor()
 {
-	switch_num++;
+	if (ActorToSpawn.Num() == 0)
+	{
+		return;
+	}
 
-	FVector LocationShift(FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-1000.0f, 1000.0f), FMath::RandRange(-500.0f, 500.0f));
+	FVector LocationShift(
+		FMath::RandRange(-SpawnRange, SpawnRange),
+		FMath::RandRange(-SpawnRange, SpawnRange),
+		FMath::RandRange(-SpawnZ, SpawnZ));
+
 	FVector SpawnLocation = GetActorLocation() + LocationShift;
 
-	TSubclassOf<class UObject> blockBP = nullptr;
+	const int32 ClassIndex = FMath::RandRange(0, ActorToSpawn.Num() - 1);
+	TSubclassOf<AActor> ChosenActor = ActorToSpawn[ClassIndex];
 
-	switch (switch_num % 3)
+	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(ChosenActor, SpawnLocation, FRotator::ZeroRotator);
+	if (SpawnedActor)
 	{
-	case 1:
-		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_MovingActor.BP_MovingActor"));
-		blockBP = (UClass*)BP_Actor->GeneratedClass;
-		if (BP_Actor && blockBP)
+		if (AMovingActor* MovingPlatform = Cast<AMovingActor>(SpawnedActor))
 		{
-			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
+			MovingPlatform->MaxRange = FMath::RandRange(200.0f, 500.0f);
+			MovingPlatform->MoveSpeed = FMath::RandRange(100.0f, 300.0f);
 		}
-		break;
-	case 2:
-		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_RotatingActor.BP_RotatingActor"));
-		blockBP = (UClass*)BP_Actor->GeneratedClass;
-		if (BP_Actor && blockBP)
+		else if (ARotatingActor* RotatingPlatform = Cast<ARotatingActor>(SpawnedActor))
 		{
-			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
+			RotatingPlatform->RotateSpeed = FMath::RandRange(60.0f, 180.0f);
+			RotatingPlatform->MajorAxis = FMath::RandRange(1.0f, 3.0f);
+			RotatingPlatform->MinorAxis = FMath::RandRange(1.0f, 3.0f);
 		}
-		break;
-	case 0:
-		BP_Actor = LoadObject<UBlueprint>(nullptr, TEXT("/Game/BP_TimerActor.BP_TimerActor"));
-		blockBP = (UClass*)BP_Actor->GeneratedClass;
-		if (BP_Actor && blockBP)
-		{
-			GetWorld()->SpawnActor<AActor>(blockBP, SpawnLocation, FRotator::ZeroRotator);
-		}
-		break;
-	default:
-		break;
 	}
 }
 
